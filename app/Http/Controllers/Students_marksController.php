@@ -14,13 +14,14 @@ class Students_marksController extends Controller
     //
     public function index()
         {
-
-        $marks=marks::with('students')->get();
-        $students=students::with('marks')->get();
-      
-       
-            return view('index', compact('students','marks'));
+            $marks = marks::with('students')->get();
+            $students = students::with('marks')->get();
+            $subjects = subjects::all();
+            $predmeti = subjects::all();
+        
+            return view('index', compact('students', 'marks', 'subjects'));
         }
+
 
         public function create()
         {
@@ -85,16 +86,16 @@ class Students_marksController extends Controller
          }
 
          public function show($roll_num)
-         {
-             $students = students::find($roll_num);
-             return view('show')->with('students', $students);
-         }
+            {
+                $student = students::find($roll_num);
+                $subjects = subjects::all();
+                $marks = marks::where('student_roll_num', $roll_num)->get();
 
-         public function update_marks(Request $request,$roll_num){
+                return view('show', compact('student', 'subjects', 'marks'));
+            }
 
-            
-    
-         }
+
+        
 
          public function search(Request $request)
         {
@@ -138,9 +139,30 @@ class Students_marksController extends Controller
             return response($output);
         }
 
+        public function addMarks(Request $request, $roll_num)
+{
+    $validatedData = $request->validate([
+        'subject' => 'required',
+        'marks' => 'required|numeric|min:1|max:5',
+    ]);
+
+    $subjectId = $request->input('subject');
+    $marksValue = $request->input('marks');
+
+    // Create a new marks instance
+    $newMarks = new marks();
+    $newMarks->student_roll_num = $roll_num;
+    $newMarks->subject_id = $subjectId; // Assign subject_id directly
+    $newMarks->marks = $marksValue; // Assign marks directly
+    $newMarks->save();
+
+    return redirect()->route('contact-view', ['roll_num' => $roll_num])->with('success', 'Marks added successfully!');
+}
+
+        
     
 
-         
+
 
  
 

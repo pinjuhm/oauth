@@ -33,6 +33,9 @@ Route::post('update-edit/{roll_num}',[Students_marksController::class, 'update']
 Route::get('contact-view/{roll_num}',[Students_marksController::class, 'show'])->name('contact-view');
 Route::delete('/{roll_num}', [Students_marksController::class, 'destroy'])->name('students.destroy');
 Route::get('/search',[Students_marksController::class, 'search']);
+Route::post('add-marks/{roll_num}', [Students_marksController::class, 'addMarks'])->name('add-marks');
+
+
 
 
 

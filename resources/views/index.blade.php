@@ -55,9 +55,10 @@
                                             <td>{{ $row->admission_date}}</td>
                                             <td rowspan="1">   </td>
                                             <td>{{ $row->cet_marks}}</td>
+                                            
  
                                         <td>
-                                            <a href="{{ url('contact-view/' . $row->roll_num . $row->marks) }}" title="View Student"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
+                                            <a href="{{ url('contact-view/' . $row->roll_num . $row->marks . $subjects) }}" title="View Student"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('update-edit/' . $row->roll_num) }}" title="Edit Student"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
 
                                             <form method="POST" action="{{ url( '/' . $row->roll_num) }}" accept-charset="UTF-8" style="display:inline">
@@ -74,6 +75,10 @@
                                 </tbody>
                                 <tbody id="Content" class="searchdata"></tbody>
                             </table>
+                            @foreach ($subjects as $subject )
+                            <p>{{ $subject->name }}</p>
+                                
+                            @endforeach
                        
                         </div>
  
