@@ -29,6 +29,16 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary">Potvrdi</button>
                                         </form>
+
+                                        <select name="subjects" id="subjects" class="form-control">
+                                            <option value="subjects" >Odabir predmeta</option>
+                                            @foreach ($subjects as $subject )
+                                                <option value="{{ $subject->id }}" >{{ $subject->name }}</option>
+                                                
+                                            @endforeach
+                                        </select>   
+
+
                                     </th>
                                 </thead>
                                 <thead>

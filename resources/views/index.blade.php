@@ -8,6 +8,8 @@
                 <div class="card">
                     <div class="card-header">List students</div>
                     <div class="card-body">
+                        <a href="{{ route('logout') }}">Logout</a>
+
                         
                         <a href="{{ url('/create') }}" class="btn btn-success btn-sm" title="Add New Contact">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New Students
@@ -58,7 +60,9 @@
                                             
  
                                         <td>
+                                            
                                             <a href="{{ url('contact-view/' . $row->roll_num . $row->marks . $subjects) }}" title="View Student"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
+                                            
                                             <a href="{{ url('update-edit/' . $row->roll_num) }}" title="Edit Student"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
 
                                             <form method="POST" action="{{ url( '/' . $row->roll_num) }}" accept-charset="UTF-8" style="display:inline">

@@ -7,7 +7,14 @@ use App\Models\students;
 use App\Models\departments;
 use App\Models\marks;
 use App\Models\subjects;
+use App\Models\User;
+use App\Models\admin;
+
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 
 class Students_marksController extends Controller
 {
@@ -18,6 +25,7 @@ class Students_marksController extends Controller
             $students = students::with('marks')->get();
             $subjects = subjects::all();
             $predmeti = subjects::all();
+            
         
             return view('index', compact('students', 'marks', 'subjects'));
         }
@@ -90,6 +98,7 @@ class Students_marksController extends Controller
                 $student = students::find($roll_num);
                 $subjects = subjects::all();
                 $marks = marks::where('student_roll_num', $roll_num)->get();
+                
 
                 return view('show', compact('student', 'subjects', 'marks'));
             }
@@ -157,9 +166,125 @@ class Students_marksController extends Controller
     $newMarks->save();
 
     return redirect()->route('contact-view', ['roll_num' => $roll_num])->with('success', 'Marks added successfully!');
-}
+        }
 
+        public function loginprikaz()
+        {
+            return view('login');
+        } 
+
+        public function registration()
+        {
+            return view('singup');
+        } 
+
+        public function customRegistration(Request $request)
+            {  
+                $request->validate([
+                    'name' => 'required',
+                    'email' => 'required|email|unique:users',
+                    'password' => 'required|min:6',
+                ]);
+                    
+                $data = $request->all();
+                $check = $this->createregistration($data);
+                
+                return view('login');
+            }
         
+        
+            public function createregistration(array $data)
+            {
+            return User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password'])
+            ]);
+            }
+
+
+            
+            public function showLoginForm()
+            {
+                return view('login');
+            }
+
+            public function login(Request $request)
+            {
+                $credentials = $request->validate([
+                    'email' => 'required|email',
+                    'password' => 'required',
+                ]);
+
+                if (Auth::attempt($credentials)) {
+                    // Authentication successful
+                    return redirect()->route('index');
+                } else {
+                    // Authentication failed
+                    return back()->withErrors(['email' => 'Invalid email or password']);
+                }
+            }
+            
+
+            
+
+
+
+            public function dashboard()
+            {
+                if(Auth::check()){
+                    return view('dashboard');
+                }
+           
+                return redirect("login")->withSuccess('You are not allowed to access');
+            }
+             
+         
+            public function signOut() {
+                Session::flush();
+                Auth::logout();
+           
+                return Redirect('login');
+            }
+
+            public function logout()
+            {
+                Auth::logout();
+                return redirect()->route('login');
+
+
+            }
+            
+            public function showLoginFormadmin()
+            {
+                return view('loginadmin');
+            }
+
+            public function loginadmin(Request $request)
+                {
+                    $credentials = $request->validate([
+                        'email' => 'required|email',
+                        'password' => 'required',
+                    ]);
+
+                    $admin = Admin::where('email', $credentials['email'])->first();
+
+                    if ($admin && $credentials['password'] === $admin->password) {
+                        // Authentication successful
+                         // or use log messages
+                        return redirect()->route('index');
+                    } else {
+                        // Authentication failed
+                        return back()->withErrors(['email' => 'Invalid email or password']);
+                    }
+                }
+
+
+
+
+           
+
+            
     
 
 

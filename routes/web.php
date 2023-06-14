@@ -4,7 +4,8 @@ use App\Http\Controllers\dep_fac_stu_subController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Students_marksController;
 use App\Http\Controllers\sub_markController;
-
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,13 +21,17 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-//Route::get('/',[Students_marksController::class, 'index']);
+Route::get('/', function () {
+    return Redirect::route('login');
+});
 
-Route::resource('/', Students_marksController::class);
 
-//Route::get('edit/{roll_num}',[Students_marksController::class, 'edit']);
-//Route::put('update-edit/{roll_num}',[Students_marksController::class, 'update']);
-//Route::get('create', [Students_marksController::class, 'create']);
+
+Route::middleware('auth')->resource('/', Students_marksController::class);
+
+//Route::resource('/', Students_marksController::class);
+
+
 Route::post('create', [Students_marksController::class, 'store']);
 Route::get('update-edit/{roll_num}', [Students_marksController::class, 'edit'])->name('update-edit');
 Route::post('update-edit/{roll_num}',[Students_marksController::class, 'update'])->name('update-edit');
@@ -34,20 +39,23 @@ Route::get('contact-view/{roll_num}',[Students_marksController::class, 'show'])-
 Route::delete('/{roll_num}', [Students_marksController::class, 'destroy'])->name('students.destroy');
 Route::get('/search',[Students_marksController::class, 'search']);
 Route::post('add-marks/{roll_num}', [Students_marksController::class, 'addMarks'])->name('add-marks');
+//nesto moje
+Route::get('/login', [Students_marksController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [Students_marksController::class, 'login']);
+Route::get('/logout',[Students_marksController::class, 'logout'])->name('logout');
+//registracija
+Route::get('/registration', [Students_marksController::class, 'registration'])->name('register-user');
+Route::post('/custom-registration', [Students_marksController::class, 'customRegistration'])->name('register.custom');
+//ovo je za admina
+Route::get('/loginadmin', [Students_marksController::class, 'showLoginFormadmin'])->name('loginadmin');
+Route::post('/loginadmin', [Students_marksController::class, 'loginadmin']);
+Route::get('/index', [Students_marksController::class, 'index'])->name('index');
+
+
+ 
 
 
 
 
 
 
-
-//Route::get('/edit{roll_num}',[Students_marksController::class, 'edit']);
-//Route::get('/edit{roll_num}', 'App\Http\Controllers\Students_marksController@edit');
-//Route::put('/edit{roll_num}', 'App\Http\Controllers\Students_marksController@updateByRollNum')->name('students.updateByRollNum');
-
-
-
-
-//Route::get('/store',[Students_marksController::class, 'create']);
-//Route::get('college',[sub_markController::class, 'index']);
-//Route::get('college',[dep_fac_stu_subController::class, 'index']);
