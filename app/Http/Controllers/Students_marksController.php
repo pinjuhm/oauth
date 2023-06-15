@@ -25,9 +25,14 @@ class Students_marksController extends Controller
             $students = students::with('marks')->get();
             $subjects = subjects::all();
             $predmeti = subjects::all();
+
+            $role = session('role'); 
+            
+
+            
             
         
-            return view('index', compact('students', 'marks', 'subjects'));
+            return view('index', compact('students', 'marks', 'subjects','role'));
         }
 
 
@@ -217,29 +222,16 @@ class Students_marksController extends Controller
                 ]);
 
                 if (Auth::attempt($credentials)) {
-                    // Authentication successful
+                    
+                    session()->put('role', 'user');
                     return redirect()->route('index');
                 } else {
-                    // Authentication failed
+                    
                     return back()->withErrors(['email' => 'Invalid email or password']);
                 }
             }
             
-
-            
-
-
-
-            public function dashboard()
-            {
-                if(Auth::check()){
-                    return view('dashboard');
-                }
-           
-                return redirect("login")->withSuccess('You are not allowed to access');
-            }
-             
-         
+   
             public function signOut() {
                 Session::flush();
                 Auth::logout();
@@ -270,11 +262,11 @@ class Students_marksController extends Controller
                     $admin = Admin::where('email', $credentials['email'])->first();
 
                     if ($admin && $credentials['password'] === $admin->password) {
-                        // Authentication successful
-                         // or use log messages
+                        session()->put('role', 'admin');
+                        
                         return redirect()->route('index');
                     } else {
-                        // Authentication failed
+                        
                         return back()->withErrors(['email' => 'Invalid email or password']);
                     }
                 }

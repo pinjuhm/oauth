@@ -60,8 +60,11 @@
                                             
  
                                         <td>
+
                                             
+                                            @if ($role === 'admin')
                                             <a href="{{ url('contact-view/' . $row->roll_num . $row->marks . $subjects) }}" title="View Student"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
+                                            @endif
                                             
                                             <a href="{{ url('update-edit/' . $row->roll_num) }}" title="Edit Student"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
 
