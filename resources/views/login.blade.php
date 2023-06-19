@@ -34,10 +34,16 @@
                             </div>
  
                             <div class="d-grid mx-auto">
-                                <button type="submit" class="btn btn-dark btn-block">Signin</button>
+                                <button type="submit" class="btn btn-dark btn-block">Sign in</button>
                                 <a href="{{ route('register-user') }}">Sing In</a>
                                 <a href="{{ route('loginadmin') }}">Admin Sing In</a>
                             </div>
+                            <div class="flex items-center justify-end mt-4">
+                <a href="{{ url('authorized/google') }}">
+                    <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" >
+                </a>
+            </div>
+
                         </form>
  
                     </div>

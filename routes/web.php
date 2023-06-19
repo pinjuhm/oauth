@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\SocialAuthController;
 use App\Http\Controllers\dep_fac_stu_subController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Students_marksController;
@@ -51,7 +52,9 @@ Route::get('/loginadmin', [Students_marksController::class, 'showLoginFormadmin'
 Route::post('/loginadmin', [Students_marksController::class, 'loginadmin']);
 Route::get('/index', [Students_marksController::class, 'index'])->name('index');
 
-
+//google oauth
+Route::get('authorized/google', [SocialAuthController::class, 'redirect'])->name('google-auth');
+Route::get('authorized/google/call-back', [SocialAuthController::class, 'handleCallback']);
  
 
 
